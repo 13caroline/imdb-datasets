@@ -1,0 +1,8 @@
+message Query3 {
+    required binary tconst (UTF8);
+    required binary type (UTF8);
+    required binary originalTitle (UTF8);
+    required binary startYear (UTF8);
+    required binary rating (UTF8);
+    required binary votes (UTF8);
+}
