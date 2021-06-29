@@ -1,0 +1,143 @@
+RATINGS
+
+create external table title_ratings (
+tconst string,
+averageRating decimal(10,1),
+numVotes integer)
+row format delimited
+fields terminated by '\t'
+lines terminated by '\n'
+stored as textfile
+location 'hdfs:///ratings'
+tblproperties ("skip.header.line.count"="1");
+
+describe title_ratings; (ver composicao da tabela)
+
+select count(*) from title_ratings; (contar entradas)
+
+
+BASICS
+
+create external table title_basics (
+tconst string,
+titleType string,
+primaryTitle string,
+originalTitle string,
+isAdult boolean,
+startYear integer,
+endYear integer,
+runtimeMinutes integer,
+genres array<string>)
+row format delimited
+fields terminated by '\t'
+collection items terminated by ','
+lines terminated by '\n'
+stored as textfile
+location 'hdfs:///basics'
+tblproperties ("skip.header.line.count"="1");
+
+describe title_basics; (ver composicao da tabela)
+
+select count(*) from title_basics; (contar entradas)
+
+PRINCIPALS
+
+create external table title_principals (
+tconst string,
+ordering integer,
+nconst string,
+category string,
+job string,
+characters string)
+row format delimited
+fields terminated by '\t'
+lines terminated by '\n'
+stored as textfile
+location 'hdfs:///principals'
+tblproperties ("skip.header.line.count"="1");
+
+describe title_principals;
+
+select count(*) from title_principals;
+
+NAME_BASICS
+
+create external table name_basics (
+nconst string,
+primaryName string,
+birthYear integer,
+deathYear integer,
+primaryProfession array<string>,
+knownForTitles array<string>)
+row format delimited
+fields terminated by '\t'
+collection items terminated by ','
+lines terminated by '\n'
+stored as textfile
+location 'hdfs:///name'
+tblproperties ("skip.header.line.count"="1");
+
+describe name_basics;
+
+select count(*) from name_basics;
+-------------------------------------------------------------------------
+
+RATINGS PARQUET
+
+create table title_ratings_parquet (
+tconst string,
+averageRating decimal(10,1),
+numVotes integer)
+stored as parquet;
+
+insert overwrite table title_ratings_parquet select * from title_ratings;
+
+select * from title_ratings_parquet limit 10;
+
+BASICS PARQUET
+
+create table title_basics_parquet (
+tconst string,
+titleType string,
+primaryTitle string,
+originalTitle string,
+isAdult boolean,
+startYear integer,
+endYear integer,
+runtimeMinutes integer,
+genres array<string>)
+stored as parquet;
+
+insert overwrite table title_basics_parquet select * from title_basics;
+
+select * from title_basics_parquet_partitioned limit 10;
+
+PRINCIPALS PARQUET
+
+create table title_principals_parquet (
+tconst string,
+ordering integer,
+nconst string,
+category string,
+job string,
+characters string)
+stored as parquet;
+
+insert overwrite table title_principals_parquet select * from title_principals;
+
+select * from title_principals_parquet limit 10;
+
+NAME BASICS
+
+create table name_basics_parquet (
+nconst string,
+primaryName string,
+birthYear integer,
+deathYear integer,
+primaryProfession array<string>,
+knownForTitles array<string>)
+stored as parquet;
+
+nsert overwrite table name_basics_parquet select * from name_basics;
+
+select * from name_basics_parquet limit 10;
